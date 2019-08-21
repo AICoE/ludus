@@ -10,11 +10,13 @@ According to TalentLMS Gamification at Work Survey 2018, about 85 % of employees
 
 ![architecture](/docs/architecture.png)
 
-For more information on the Open Data Hub architecture and installation go [here](https://opendatahub.io/arch.html)
-
 ## Getting started
 
 These instructions will get you a copy of the project up and running on a live OpenShift Cluster.
+
+### Prerequisites
+
+You need to first setup Open Data Hub on a OpenShift cluster. For more information on the Open Data Hub architecture and installation go [here](https://opendatahub.io/arch.html). You can also opt for seperate deployment of Kafka along with	Elasticsearch, Logstash and Kibana. Refer [this](https://dzone.com/articles/deploying-kafka-with-the-elk-stack) tutorial.
 
 ### Deployment
 
@@ -118,14 +120,13 @@ schema = {
     }
 ```
 
-## Dashboard Screenshots
+## Sample Kibana Dashboard Screenshots
+
+You need to create your own kibana dashboard using the event and badges data stored in the elasticsearch index. Please refer [this](https://www.elastic.co/guide/en/kibana/6.2/dashboard-getting-started.html) tutorial for the same. Following are the sample layouts for reference.  
 
 ![dashboard_screenshot_1](/docs/dashboard_screenshot_1.png)
 
-
-
 ![dashboard_screenshot_2](/docs/dashboard_screenshot_2.png)
-
 
 ## Built With
 
@@ -143,10 +144,6 @@ schema = {
 * [AICoE](https://github.com/AICoE)
 * [Open Data Hub](https://opendatahub.io/)
 * [Faust](https://github.com/robinhood/faust)
-
-## Disclaimer
-
-This project is currently designed for **Red Hat** internal usage only.
 
 ## License
 
