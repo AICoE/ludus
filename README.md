@@ -14,7 +14,7 @@ For more information on the Open Data Hub architecture and installation go [here
 
 ## Getting started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live OpenShift Cluster.
+These instructions will get you a copy of the project up and running on a live OpenShift Cluster.
 
 ### Deployment
 
@@ -110,7 +110,7 @@ schema = {
 }
 ```
 
-- Add this new event to event_configuration.py file in configs directory. You have to also add validator and formatter for it. A sample configuration for Github Comment event is given below
+- Add this new event to event_configuration.py file in configs directory. You have to also add validator's schema object and the name of the formatter template to it. A sample configuration for Github Comment event is given below
 ```
 'github_comment': {
         'validator': github_comment_validator.schema,
