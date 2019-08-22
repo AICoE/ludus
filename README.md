@@ -120,7 +120,7 @@ schema = {
     }
 ```
 
-### How to configure a new Badge?
+### How to configure a new badge?
 
 - Currently you can configure badges with 3 different types of criteria
 - `every_event` criteria is used when you want to award a badge on every occurrence of the event associated with the badge. A sample configuration for a badge with this criteria is given below
