@@ -166,7 +166,7 @@ schema = {
 
  `image_file`: Path of an image associated with the badge. Not supported yet 
 
-- `match` criteria is used when you want to award a badge when certain events occur which are matched on a field in the event's json. This field's name can be different for every event but content is equal. A sample configuration for a homerun badge with this criteria is given below. It is awarded when a user creates an issue on github, creates a pull request for the issue, gets it reviewed and merged. The matching filed here is the issue number
+- `match` criteria is used when you want to award a badge when certain events occur which are matched on a field in the event's json. This field's name can be different for every event but content is same. A sample configuration for a homerun badge with this criteria is given below. It is awarded when a user creates an issue on github, creates a pull request for the issue, gets it reviewed and merged. The matching field here is the issue number
 ```
 'homerun': {
         'description': 'awarded for opening an issue, creating pull request, closing the issue',
@@ -193,7 +193,7 @@ schema = {
  
  `description`: General information about the badge
 
- `criteria.type`: Type of the criteria for awarding the badge. Here criteria is to award badge when certain events occur which are matched on a `field` in the event's json
+ `criteria.type`: Type of the criteria for awarding the badge. Here criteria is to award badge when certain events occur which are matched on a `criteria.matching_events.field` in the event's json
 
  `criteria.matching_events.event_type`: Type of the event to be matched
 
@@ -201,7 +201,7 @@ schema = {
 
  `image_file`: Path of an image associated with the badge. Not supported yet 
 
-- Create a badge with one of the above criteria and put it in badge_configuration.py file in the configs directory
+- You can create a badge with one of the above criteria and put it in badge_configuration.py file in the configs directory
 
 ## Sample Kibana Dashboard Screenshots
 
