@@ -143,7 +143,7 @@ schema = {
 
  `image_file`: Path of an image associated with the badge. Not supported yet 
 
-- `match` criteria is used when you want to award a badge for certain amount of events, associated with the badge, have occurred. This badge is awarded only once per user. A sample configuration for a badge with this criteria is given below
+- `count` criteria is used when you want to award a badge for certain amount of events, associated with the badge, have occurred. This badge is awarded only once per user. A sample configuration for a badge with this criteria is given below
 ```
 'first-github-comment': {
         'description': 'awarded for first github comment',
