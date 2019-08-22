@@ -81,7 +81,7 @@ To set up a github webhook, go to the settings page of your repository or organi
   
 To set up a trello webhook, please follow the instructions given [here](https://developers.trello.com/page/webhooks).
 
-### How to configure new events and badges?
+### How to configure a new event?
 
 Before adding new events and badges we need to fork this repository. Once you push newly added events and badges, you can use the URL of the forked repository as the `LUDUS_URL` while deploying your application.
 
@@ -119,6 +119,89 @@ schema = {
         'formatter': 'github_comment_formatter'
     }
 ```
+
+### How to configure a new Badge?
+
+- Currently you can configure badges with 3 different types of criteria
+- `every_event` criteria is used when you want to award a badge on every occurrence of the event associated with the badge. A sample configuration for a badge with this criteria is given below
+```
+'finisher': {
+        'description': 'awarded for moving a card in the completed list',
+        'event_type': 'task_completed',
+        'criteria': {
+            'type': 'every_event'
+        },
+        'image_file': None
+    }
+```
+ 
+ `description`: General information about the badge
+
+ `event_type`: Type of the event for which badge will be awarded
+
+ `criteria.type`: Type of the criteria for awarding the badge. Here criteria is to award the badge for every occurrence of `event_type`
+
+ `image_file`: Path of an image associated with the badge. Not supported yet 
+
+- `match` criteria is used when you want to award a badge for certain amount of events, associated with the badge, have occurred. This badge is awarded only once per user. A sample configuration for a badge with this criteria is given below
+```
+'first-github-comment': {
+        'description': 'awarded for first github comment',
+        'event_type': 'github_comment',
+        'criteria': {
+            'type': 'count',
+            'value': 1
+        },
+        'image_file': None
+    }
+```
+ 
+ `description`: General information about the badge
+
+ `event_type`: Type of the event for which badge will be awarded
+
+ `criteria.type`: Type of the criteria for awarding the badge. Here criteria is to award badge when count of `event_type` for a particular user reaches `criteria.value`
+
+ `criteria.value`: A count value that satisfies this criteria
+
+ `image_file`: Path of an image associated with the badge. Not supported yet 
+
+- `match` criteria is used when you want to award a badge when certain events occur which are matched on a field in the event's json. This field's name can be different for every event but content is equal. A sample configuration for a homerun badge with this criteria is given below. It is awarded when a user creates an issue on github, creates a pull request for the issue, gets it reviewed and merged. The matching filed here is the issue number
+```
+'homerun': {
+        'description': 'awarded for opening an issue, creating pull request, closing the issue',
+        'criteria': {
+            'type': 'match',
+            'matching_events': [
+                {
+                    'event_type': 'issue_closed',
+                    'field': 'raw_github.issue.number'
+                },
+                {
+                    'event_type': 'pull_request',
+                    'field': 'issue_closes'
+                },
+                {
+                    'event_type': 'issue',
+                    'field': 'raw_github.issue.number'
+                }
+            ]
+        },
+        'image_file': None
+    },
+```
+ 
+ `description`: General information about the badge
+
+ `criteria.type`: Type of the criteria for awarding the badge. Here criteria is to award badge when certain events occur which are matched on a `field` in the event's json
+
+ `criteria.matching_events.event_type`: Type of the event to be matched
+
+ `criteria.matching_events.field`: The name of the field in the event's json to be matched
+
+ `image_file`: Path of an image associated with the badge. Not supported yet 
+
+- Create a badge with one of the above criteria and put it in badge_configuration.py file in the configs directory
 
 ## Sample Kibana Dashboard Screenshots
 
