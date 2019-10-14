@@ -16,58 +16,50 @@ These instructions will get you a copy of the project up and running on a live O
 
 ### Prerequisites
 
-You need to first setup Open Data Hub on a OpenShift cluster. For more information on the Open Data Hub architecture and installation go [here](https://opendatahub.io/arch.html). You can also opt for seperate deployment of Kafka along with	Elasticsearch, Logstash and Kibana. Refer [this](https://dzone.com/articles/deploying-kafka-with-the-elk-stack) tutorial.
+You need to first setup Open Data Hub on a OpenShift cluster. For more information on the Open Data Hub architecture 
+and installation go [here](https://opendatahub.io/arch.html). You can also opt for seperate deployment of Kafka along 
+with Elasticsearch, Logstash and Kibana. 
+Refer [this](https://dzone.com/articles/deploying-kafka-with-the-elk-stack) tutorial.
+
+### Configuration
+
+Create a configuration file by copying the sample.
+```
+cp .env.sample .env
+```
+
+- `GITHUB_URL`: The url of the forked github repository of ludus. 
+- `KAFKA_TOPIC`: The name of the kafka topic where event lister will publish the incoming events.
+- `KAFKA_BOOTSTRAP_SERVER`: The hostname and port of the the kafka bootstrap server. The valid format is hostname:port
+- `KAFKA_TOPIC`: The name of the kafka topic where event lister will publish the incoming events.
+- `AWARDER_NAME`: The name of the awarder application. This should be unique per kafka cluster. You can scale it to distribute event processing load
+- `AWARDER_PORT`: The port number of the awarder application
+- `EVENTS_TABLE_NAME`: The table where events data of the user will be stored by awarder. This should be unique per kafka cluster.
+- `BADGES_TABLE_NAME`: The table where all previously awarded badges for the user will stored by the awarder.This should be unique per kafka cluster
+- `ULTRAHOOK_API_KEY`: The api key unique to each ultrahook account
+- `ULTRAHOOK_SUBDOMAIN`: A subdomain of your namespace
+- `ULTRAHOOK_DESTINATION`: The hostname of the 'event-listener-route' Route on OpenShift cluster
 
 ### Deployment
 
-To deploy Event Listener application on an OpenShift cluster use the following command with required parameters:
-        
 ```
-oc process -f openshift/ludus.event_listener.deployment.template.yaml -p GITHUB_URL=<github_url> KAFKA_TOPIC=<kafka_topic_name> KAFKA_BOOTSTRAP_SERVER=<kafka_bootstrap_server>| oc apply -f -
-```
-
-- `GITHUB_URL`: The url of the forked github repository of ludus. The default is https://github.com/akhil-rane/Ludus.git
-
-- `KAFKA_TOPIC`: The name of the kafka topic where event lister will publish the incoming events. The default is ludus_awarder
-
-- `KAFKA_BOOTSTRAP_SERVER`: The hostname and port of the the kafka bootstrap server. The valid format is hostname:port
-
-
-To deploy Awarder application on an OpenShift cluster use the following command with required parameters:
-        
-```
-oc process -f openshift/ludus.awarder.deployment.template.yaml -p GITHUB_URL=<github_url> KAFKA_TOPIC=<kafka_topic_name> KAFKA_BOOTSTRAP_SERVER=<kafka_bootstrap_server> AWARDER_NAME=<awarder_name> AWARDER_PORT=<awarder_port> EVENTS_TABLE_NAME=<events_table_name> BADGES_TABLE_NAME=<badges_table_name> | oc apply -f -
+make deploy_event_listener
+make deploy_awarder
 ```
 
-- `GITHUB_URL`: The url of the forked github repository of ludus. The default is https://github.com/akhil-rane/Ludus.git
+If Event Listener application is not behind the firewall, the hostname of the 'event-listener-route' 
+Route on the OpenShift Cluster will be the `LUDUS_URL`. This can be used to configure the webhooks.
 
-- `KAFKA_TOPIC`: The name of the kafka topic where event lister will publish the incoming events. The default is ludus_awarder
-
-- `KAFKA_BOOTSTRAP_SERVER`: The hostname and port of the the kafka bootstrap server. The valid format is hostname:port
-
-- `AWARDER_NAME`: The name of the awarder application. This should be unique per kafka cluster. You can scale it to distribute event processing load
-
-- `AWARDER_PORT`: The port number of the awarder application
-
-- `EVENTS_TABLE_NAME`: The table where events data of the user will be stored by awarder. This should be unique per kafka cluster.
-        
-- `BADGES_TABLE_NAME`: The table where all previously awarded badges for the user will stored by the awarder.This should be unique per kafka cluster
-
-If Event Listener application is not behind the firewall, the hostname of the 'event-listener-route' Route on the OpenShift Cluster will be the `LUDUS_URL`. This can be used to configure the webhooks 
-
-If Event Listener application is behind the firewall, we need to configure [ultrahook](http://www.ultrahook.com/faq) to receive webhooks behind the firewall. Register and get your `ULTRAHOOK_API_KEY` [here](http://www.ultrahook.com/register). Please remember the `WEBHOOK_NAMESPACE`. This will be unique for your ultrahook account.
-
+If Event Listener application is behind the firewall, we need to configure [ultrahook](http://www.ultrahook.com/faq) to 
+receive webhooks behind the firewall. Register and get your `ULTRAHOOK_API_KEY` 
+[here](http://www.ultrahook.com/register). Please remember the `WEBHOOK_NAMESPACE`. 
+This will be unique for your ultrahook account.
 
 To deploy Ultrahook on an OpenShift cluster use the following command with required parameters:
         
 ```
-oc process -f openshift/ludus.ultrahook.deployment.template.yaml -p ULTRAHOOK_API_KEY=`echo -n "<ultrahook_api_key>" | base64` ULTRAHOOK_SUBDOMAIN=<ultrahook_subdomain> ULTRAHOOK_DESTINATION=<event_listener_hostname> | oc apply -f -
+make deploy_ultrahook
 ```
-
-- `ULTRAHOOK_API_KEY`: The api key unique to each ultrahook account
-
-- `ULTRAHOOK_SUBDOMAIN`: A subdomain of your namespace
-- `ULTRAHOOK_DESTINATION`: The hostname of the 'event-listener-route' Route on OpenShift cluster
 
 If you registered your account with the 'ludus.ultrahook.com' as your `WEBHOOK_NAMESPACE` and later deployed the ultrahook with `ULTRAHOOK_SUBDOMAIN` as 'redhat', your `LUDUS_URL`will be 'http://redhat.ludus.ultrahook.com'
 
