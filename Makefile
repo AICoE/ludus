@@ -1,16 +1,19 @@
 ENV_FILE := .env
+# use bash, for making echo -n work (see below)
+SHELL=/bin/bash
 include ${ENV_FILE}
 export $(shell sed 's/=.*//' ${ENV_FILE})
+export PIPENV_DOTENV_LOCATION=${ENV_FILE}
 
 deploy_ultrahook:
 	oc process -f openshift/ludus.ultrahook.deployment.template.yaml \
-		--param ULTRAHOOK_API_KEY=`echo "${ULTRAHOOK_API_KEY}" | base64` \
+		--param ULTRAHOOK_API_KEY=$(shell echo -n "${ULTRAHOOK_API_KEY}" | base64) \
 		--param ULTRAHOOK_SUBDOMAIN=${ULTRAHOOK_SUBDOMAIN} \
 		--param ULTRAHOOK_DESTINATION=${ULTRAHOOK_DESTINATION} | oc apply -f -
 
 delete_ultrahook:
 	oc process -f openshift/ludus.ultrahook.deployment.template.yaml \
-		--param ULTRAHOOK_API_KEY=`echo "${ULTRAHOOK_API_KEY}" | base64` \
+		--param ULTRAHOOK_API_KEY=$(shell echo -n "${ULTRAHOOK_API_KEY}" | base64) \
 		--param ULTRAHOOK_SUBDOMAIN=${ULTRAHOOK_SUBDOMAIN} \
 		--param ULTRAHOOK_DESTINATION=${ULTRAHOOK_DESTINATION} | oc delete -f -
 
@@ -45,3 +48,6 @@ delete_awarder:
 		--param AWARDER_PORT=${AWARDER_PORT} \
 		--param EVENTS_TABLE_NAME=${EVENTS_TABLE_NAME} \
 		--param BADGES_TABLE_NAME=${BADGES_TABLE_NAME} | oc delete -f -
+
+setup_trello:
+	pipenv run python setup_trello.py
