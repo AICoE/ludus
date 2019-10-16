@@ -12,6 +12,7 @@ jsonschema = "==3.0.1"
 Flask = "==1.0.3"
 DateTime = "==4.3"
 Jinja2 = "==2.10.1"
+py-trello = "*"
 
 [requires]
 python_version = "3.6"

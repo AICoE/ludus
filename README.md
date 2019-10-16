@@ -63,15 +63,24 @@ make deploy_ultrahook
 
 If you registered your account with the 'ludus.ultrahook.com' as your `WEBHOOK_NAMESPACE` and later deployed the ultrahook with `ULTRAHOOK_SUBDOMAIN` as 'redhat', your `LUDUS_URL`will be 'http://redhat.ludus.ultrahook.com'
 
-### How to configure github and trello webhooks?
+### How to configure webhooks
 
-To set up a github webhook, go to the settings page of your repository or organization. From there, click Webhooks, then Add webhook. Now enter/configure following details:
+#### Github
+
+To set up a github webhook, go to the settings page of your repository or organization. From there, click Webhooks, 
+then Add webhook. Now enter/configure following details:
 
 - `Payload URL`: `LUDUS_URL`
 - `Content type`: application/json
 - `Which events would you like to trigger this webhook?`: Send me everything
   
-To set up a trello webhook, please follow the instructions given [here](https://developers.trello.com/page/webhooks).
+#### Trello
+
+Get a TRELLO_API_KEY from [here](https://trello.com/app-key) and a TRELLO_TOKEN from following the link to 
+"manually generate a Token" on the same page. Put both of these into the .env file.
+Also add TRELLO_ORG_ID to the .env file.
+
+Then run `make setup_trello`
 
 ### How to configure a new event?
 
