@@ -1,0 +1,19 @@
+[
+  {
+    "_id": "AWspI45cGgE-qfdNU3Ra",
+    "_type": "dashboard",
+    "_source": {
+      "title": "Ludus Events Dashboard",
+      "hits": 0,
+      "description": "",
+      "panelsJSON": "[{\"col\":1,\"columns\":[\"username\",\"event_source\",\"event_type\",\"event_url\"],\"id\":\"AWspIA57XiR8tMrEEFSu\",\"panelIndex\":1,\"row\":1,\"size_x\":8,\"size_y\":3,\"sort\":[\"@timestamp\",\"desc\"],\"type\":\"search\"},{\"col\":1,\"columns\":[\"username\",\"badge\",\"description\"],\"id\":\"AWtXt31-fRPWVHR3Ks16\",\"panelIndex\":8,\"row\":4,\"size_x\":8,\"size_y\":3,\"sort\":[\"@timestamp\",\"desc\"],\"type\":\"search\"},{\"col\":1,\"id\":\"AWt2OHQs--m35j9RQXvM\",\"panelIndex\":9,\"row\":7,\"size_x\":8,\"size_y\":3,\"type\":\"visualization\"},{\"col\":9,\"id\":\"AWt2Vp3XSvY9kvRjL4se\",\"panelIndex\":10,\"row\":5,\"size_x\":4,\"size_y\":4,\"type\":\"visualization\"},{\"col\":9,\"id\":\"AWt2W7bXQzOrUx0fTg4T\",\"panelIndex\":11,\"row\":1,\"size_x\":4,\"size_y\":4,\"type\":\"visualization\"},{\"col\":9,\"id\":\"AWu-qJGNoInPHZpjt4-d\",\"panelIndex\":13,\"row\":9,\"size_x\":2,\"size_y\":2,\"type\":\"visualization\"},{\"col\":11,\"id\":\"AWu-rFcJkM9Rxxtchnsh\",\"panelIndex\":14,\"row\":11,\"size_x\":2,\"size_y\":2,\"type\":\"visualization\"},{\"col\":9,\"id\":\"AWvEjYMgSxRetT1uA8SX\",\"panelIndex\":15,\"row\":11,\"size_x\":2,\"size_y\":2,\"type\":\"visualization\"},{\"col\":11,\"id\":\"AWvEkXMJYAgi1rSEX7Vd\",\"panelIndex\":16,\"row\":9,\"size_x\":2,\"size_y\":2,\"type\":\"visualization\"},{\"col\":1,\"id\":\"AWvElsZVeX6nL62pG_t0\",\"panelIndex\":17,\"row\":10,\"size_x\":8,\"size_y\":3,\"type\":\"visualization\"}]",
+      "optionsJSON": "{\"darkTheme\":false}",
+      "uiStateJSON": "{\"P-13\":{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"}}},\"P-14\":{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"}}},\"P-15\":{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"}}},\"P-16\":{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"}}},\"P-2\":{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"}}},\"P-3\":{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"}}},\"P-4\":{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"}}},\"P-5\":{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"}}},\"P-6\":{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"}}},\"P-9\":{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":null,\"direction\":null}}}}}",
+      "version": 1,
+      "timeRestore": false,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[{\"query\":{\"match_all\":{}}}],\"highlightAll\":true,\"version\":true}"
+      }
+    }
+  }
+]
