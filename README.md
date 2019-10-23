@@ -206,11 +206,11 @@ schema = {
 
 ## Sample Kibana Dashboard Screenshots
 
-You need to create your own kibana dashboard using the event and badges data stored in the elasticsearch index. Please refer [this](https://www.elastic.co/guide/en/kibana/6.2/dashboard-getting-started.html) tutorial for the same. Following are the sample layouts for reference.  
+You need to create your own kibana dashboard using the event and badges data stored in the elasticsearch index. Please refer [this](https://www.elastic.co/guide/en/kibana/6.2/dashboard-getting-started.html) tutorial for the same. 
+The following dashboard can be created by importing [docs/kibana_dashboard.json](/docs/kibana_dashboard.json)
 
-![dashboard_screenshot_1](/docs/dashboard_screenshot_1.png)
+![kibana_dashboard](/docs/kibana_dashboard.png)
 
-![dashboard_screenshot_2](/docs/dashboard_screenshot_2.png)
 
 ## Built With
 
