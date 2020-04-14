@@ -1,21 +1,22 @@
+"""Bug fix validator."""
 schema = {
-    "type" : "object",
-    "properties" : {
-        "action" : {
-            "type" : "string",
-            "pattern" : "closed"
+    "type": "object",
+    "properties": {
+        "action": {
+            "type": "string",
+            "pattern": "closed"
         },
-        "issue" : {
-            "type" : "object",
+        "issue": {
+            "type": "object",
             "properties": {
-                "labels" : {
+                "labels": {
                     "type": "array",
                     "contains": {
                         "type": "object",
                         "properties": {
-                            "name" : {
-                                "type" : "string",
-                                "pattern" : "bug"
+                            "name": {
+                                "type": "string",
+                                "pattern": "bug"
                             }
                         },
                         "required": ["name"]

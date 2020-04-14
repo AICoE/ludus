@@ -1,16 +1,24 @@
+"""Validator."""
+
 from configs import event_configuration
 from jsonschema import ValidationError
 from jsonschema import validate
 
 
 class Validator:
+    """Validator."""
+
     def get_validator(event_source):
+        """Get validator."""
         if event_source == "default":
             return DefaultEventValidator()
 
 
 class DefaultEventValidator:
+    """Default event validator."""
+
     def get_valid_event_types(self, event):
+        """Get valid event names."""
         valid_event_types = list()
 
         for event_type in event_configuration.config.keys():
@@ -22,5 +30,3 @@ class DefaultEventValidator:
                 continue
 
         return valid_event_types
-
-

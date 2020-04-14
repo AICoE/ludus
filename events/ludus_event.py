@@ -1,8 +1,12 @@
+"""Ludus events."""
 from datetime import datetime
 import faust
 import json
 
+
 class LudusEvent(faust.Record, isodates=True, serializer="json"):
+    """Ludus event."""
+
     username: str = None
     type: str = None
     timestamp: datetime = None

@@ -1,3 +1,4 @@
+"""Badge configuration."""
 badges = {
     'first-pull': {
         'description': 'first pull request merged',
@@ -8,7 +9,7 @@ badges = {
         },
         'image_file': None
     },
-    'pull-master' : {
+    'pull-master': {
         'description': '5 pull requests merged',
         'event_type': 'pull_request',
         'criteria': {
@@ -17,7 +18,7 @@ badges = {
         },
         'image_file': None
     },
-    'pull-king' : {
+    'pull-king': {
         'description': '10 pull requests merged',
         'event_type': 'pull_request',
         'criteria': {
@@ -70,7 +71,7 @@ badges = {
         },
         'image_file': None
     },
-    'review-master' : {
+    'review-master': {
         'description': 'awarded for reviewing and merging 5 pull-requests',
         'event_type': 'review',
         'criteria': {
@@ -79,7 +80,7 @@ badges = {
         },
         'image_file': None
     },
-    'review-king' : {
+    'review-king': {
         'description': 'awarded for reviewing and merging 10 pull-requests',
         'event_type': 'review',
         'criteria': {
@@ -145,7 +146,8 @@ badges = {
         'image_file': None
     },
     'trellorun': {
-        'description': 'awarded for creating a card in new list, moving it through backlog and in-progress lists and finally in completed list',
+        'description': 'awarded for creating a card in new list, moving it through backlog and in-progress lists\
+             and finally in completed list',
         'criteria': {
             'type': 'match',
             'matching_events': [
