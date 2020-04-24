@@ -1,22 +1,23 @@
+"""Task completed validator."""
 schema = {
-    "type" : "object",
-    "properties" : {
-        "action" : {
-            "type" : "object",
+    "type": "object",
+    "properties": {
+        "action": {
+            "type": "object",
             "properties": {
                 "type": {
-                    "type" : "string",
-                    "pattern" : "updateCard"
+                    "type": "string",
+                    "pattern": "updateCard"
                 },
                 "data": {
-                    "type" : "object",
-                    "properties" : {
-                        "listAfter" : {
-                            "type" : "object",
+                    "type": "object",
+                    "properties": {
+                        "listAfter": {
+                            "type": "object",
                             "properties": {
                                 "name": {
-                                    "type" : "string",
-                                    "pattern" : "Completed"
+                                    "type": "string",
+                                    "pattern": "Completed"
                                 }
                             },
                             "required": ["name"]

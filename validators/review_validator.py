@@ -1,14 +1,15 @@
+"""Review validator."""
 schema = {
-    "type" : "object",
-    "properties" : {
-        "action" : {
-            "type" : "string",
-            "pattern" : "closed"
+    "type": "object",
+    "properties": {
+        "action": {
+            "type": "string",
+            "pattern": "closed"
         },
-        "pull_request" : {
-            "type" : "object",
+        "pull_request": {
+            "type": "object",
             "properties": {
-                "merged" : { "enum" : [ True ] }
+                "merged": {"enum": [True]}
             },
             "required": ["merged"]
         }

@@ -1,8 +1,9 @@
+"""Github comment validator."""
 schema = {
-    "type" : "object",
-    "properties" : {
-        "comment" : {
-            "type" : "object",
+    "type": "object",
+    "properties": {
+        "comment": {
+            "type": "object",
         }
     },
     "required": ["comment"]

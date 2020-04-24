@@ -1,3 +1,4 @@
+"""Awarder."""
 import ssl
 import faust
 from configs import config
@@ -10,25 +11,32 @@ import json
 import re
 
 
-#Setting up Faust app
-ssl_context = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH, cafile=config.kafka_configuration['cacert_file'])
+# Setting up Faust app
+ssl_context = ssl.create_default_context(
+    purpose=ssl.Purpose.SERVER_AUTH, cafile=config.kafka_configuration['cacert_file'])
 app = faust.App(awarder_configuration['faust_app_name'],
-                broker='kafka://' + config.kafka_configuration['bootstrap_server'],
+                broker='kafka://' +
+                config.kafka_configuration['bootstrap_server'],
                 broker_credentials=ssl_context,
                 store=awarder_configuration['faust_store'])
 
-#Setting Kafka topic for stream processors
+# Setting Kafka topic for stream processors
 events = app.topic(config.kafka_configuration['topic'], value_type=LudusEvent)
 
-#Initializing faust tables
-event_data = app.Table(awarder_configuration['events_table_name'], default=None, partitions=8)
-awarded_badges = app.Table(awarder_configuration['badges_table_name'], default=None, partitions=8)
+# Initializing faust tables
+event_data = app.Table(
+    awarder_configuration['events_table_name'], default=None, partitions=8)
+awarded_badges = app.Table(
+    awarder_configuration['badges_table_name'], default=None, partitions=8)
 
-#Initializing datastore
+# Initializing datastore
 datastore = Datastore.get_datastore(datastore_configuration['type'])
 
-#Initializing lookup data
+# Initializing lookup data
+
+
 def get_event_to_badge():
+    """Get event to badge."""
     event_to_badges = dict()
     for badge_name in badge_config.keys():
         badge = badge_config[badge_name]
@@ -60,9 +68,10 @@ def get_event_to_badge():
 event_to_badges = get_event_to_badge()
 
 
-#Processes ludus event stream
+# Processes ludus event stream
 @app.agent(events)
 async def aggregate_events(events):
+    """Aggregate events."""
     async for event in events.group_by(LudusEvent.username):
         if event.type is None:
             event_dict = event.__dict__
@@ -78,18 +87,20 @@ async def aggregate_events(events):
             evaluate_user_data_for_badges(event_dict)
 
 
-#Functions to update event data of a particular user
-def update_data(data,event):
-    updated_count_data = update_count(data,event)
-    updated_match_data = update_match(updated_count_data,event)
+# Functions to update event data of a particular user
+def update_data(data, event):
+    """Function to update event data of a particular user."""
+    updated_count_data = update_count(data, event)
+    updated_match_data = update_match(updated_count_data, event)
     return updated_match_data
 
 
-def update_count(data,event):
+def update_count(data, event):
+    """Update count."""
     count = 0
     if event['event_type'] in data['count']:
         count = data['count'][event['event_type']]
-        count+=1
+        count += 1
     else:
         count = 1
 
@@ -97,7 +108,8 @@ def update_count(data,event):
     return data
 
 
-def update_match(data,event):
+def update_match(data, event):
+    """Update match."""
     if event['event_type'] not in event_to_badges:
         return data
 
@@ -112,7 +124,8 @@ def update_match(data,event):
 
             for matching_event in matching_events:
                 if matching_event['event_type'] == event['event_type']:
-                    match_value = get_match_value(matching_event['field'], event)
+                    match_value = get_match_value(
+                        matching_event['field'], event)
 
                     if match_value in data['match'][badge['name']]:
                         state = set(data['match'][badge['name']][match_value])
@@ -126,12 +139,14 @@ def update_match(data,event):
 
 
 def evaluate_user_data_for_badges(event):
+    """Evaluate user data for badges."""
     if event_data is not None:
         for badge in event_to_badges[event['event_type']]:
             award_badge(event['username'], badge['name'], badge, event)
 
 
 def award_badge(username, badge_name, badge_details, event):
+    """Award badge."""
     criteria_type = badge_details['criteria']['type']
 
     if criteria_type == 'count':
@@ -139,10 +154,12 @@ def award_badge(username, badge_name, badge_details, event):
     elif criteria_type == 'match':
         award_badge_for_type_match(username, badge_name, badge_details, event)
     elif criteria_type == 'every_event':
-        award_badge_for_type_every_event(username, badge_name, badge_details, event)
+        award_badge_for_type_every_event(
+            username, badge_name, badge_details, event)
 
 
 def is_badge_awarded(username, badge_name):
+    """Check badge awarded."""
     if (username not in awarded_badges) or (awarded_badges[username] is None):
         return False
     elif badge_name in awarded_badges[username]:
@@ -151,6 +168,7 @@ def is_badge_awarded(username, badge_name):
 
 
 def award_badge_for_type_count(username, badge_name, badge_details):
+    """Award badge for type count."""
     equality = badge_name
     if is_badge_awarded(username, equality):
         return
@@ -158,15 +176,18 @@ def award_badge_for_type_count(username, badge_name, badge_details):
     event_count = event_data[username]['count'][badge_details['event_type']]
 
     if event_count >= badge_details['criteria']['value']:
-        store_badge(username,badge_name,badge_details, equality)
+        store_badge(username, badge_name, badge_details, equality)
 
 
 def award_badge_for_type_match(username, badge_name, badge_details, event):
-    states = event_data[username][badge_details['criteria']['type']][badge_name]
-    field = get_matching_field(badge_details['criteria']['matching_events'],event)
+    """Award badge for type match."""
+    states = event_data[username][badge_details['criteria']
+                                  ['type']][badge_name]
+    field = get_matching_field(
+        badge_details['criteria']['matching_events'], event)
     match_value = get_match_value(field, event)
     state = states[match_value]
-    equality = badge_name + '_' +str(match_value)
+    equality = badge_name + '_' + str(match_value)
 
     if is_badge_awarded(username, equality):
         return
@@ -176,31 +197,35 @@ def award_badge_for_type_match(username, badge_name, badge_details, event):
             return
 
     store_badge(username, badge_name, badge_details, equality)
-    del event_data[username][badge_details['criteria']['type']][badge_name][match_value]
+    del event_data[username][badge_details['criteria']
+                             ['type']][badge_name][match_value]
 
 
 def award_badge_for_type_every_event(username, badge_name, badge_details, event):
+    """Award badge for type every event."""
     equality = badge_name+' '+event['timestamp'].strftime("%s")
     if is_badge_awarded(username, equality):
         return
 
-    store_badge(username,badge_name,badge_details, equality)
+    store_badge(username, badge_name, badge_details, equality)
 
 
 def get_matching_field(matching_events, event):
+    """Get matching field."""
     for matching_event in matching_events:
         if matching_event['event_type'] == event['event_type']:
             return matching_event['field']
 
 
 def get_match_value(match_field, event):
+    """Get match value."""
     is_json = re.search('[.]+', match_field)
 
     if is_json:
         fields = match_field.split('.')
         match_value = event[fields[0]]
 
-        for i in range(1,len(fields)):
+        for i in range(1, len(fields)):
             match_value = match_value[fields[i]]
     else:
         match_value = event[match_field]
@@ -208,8 +233,9 @@ def get_match_value(match_field, event):
     return str(match_value)
 
 
-#Builds a skeleton Faust table template, should be changed when new Criteria is added
+# Builds a skeleton Faust table template, should be changed when new Criteria is added
 def get_table_template():
+    """Build a skeleton Faust table template, should be changed when new Criteria is added."""
     table_template = {
         'count': dict(),
         'match': dict()
@@ -217,8 +243,9 @@ def get_table_template():
     return table_template
 
 
-#Creates a badge and stores it in Faust table so that are not reawareded to a User
-def store_badge(username, badge_name, badge_details,equality):
+# Creates a badge and stores it in Faust table so that are not reawareded to a User
+def store_badge(username, badge_name, badge_details, equality):
+    """Create a badge and stores it in Faust table so that are not reawareded to a User."""
     new_badge = {
         'type': 'badge',
         'username': username,
@@ -240,4 +267,5 @@ def store_badge(username, badge_name, badge_details,equality):
 
 
 if __name__ == "__main__":
+    """Main method."""
     app.main()

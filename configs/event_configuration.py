@@ -1,5 +1,8 @@
-from validators import pull_request_validator,issue_validator,issue_closed_validator,github_comment_validator,review_validator,bug_fixed_validator
-from validators import trello_comment_validator, new_idea_validator, task_completed_validator, task_moved_to_backlog_validator, task_moved_to_inprogress_validator
+"""Event configuration."""
+from validators import pull_request_validator, issue_validator, issue_closed_validator, github_comment_validator, \
+    review_validator, bug_fixed_validator
+from validators import trello_comment_validator, new_idea_validator, task_completed_validator, \
+    task_moved_to_backlog_validator, task_moved_to_inprogress_validator
 
 
 config = {
